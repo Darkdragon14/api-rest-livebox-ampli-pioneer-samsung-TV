@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+
+
+  apiampli:
+    build: ./ampli
+    image: apiampli
+    network_mode: "host"
+    ports:
+      - 8090:8090
+
+  apiawox:
+    build: ./awox
+    image: apiawox
+    network_mode: "host"
+    ports:
+      - 8093:8093
+
+  apilivebox:
+    build: ./livebox
+    image: apilivebox
+    network_mode: "host"
+    ports:
+      - 8094:8094
+
+  apimipow:
+    build: ./mipow
+    image: apimipow
+    network_mode: "host"
+    ports:
+      - 8092:8092
+
+  apitvsamsung:
+    build: ./TVSamsung
+    image: apitvsamsung
+    network_mode: "host"
+    ports:
+      - 8091:8091
+
+  proxy:
+    build: ./proxy
+    image: proxy
+    network_mode: "host"
+    ports:
+      - 8080:8080
+    #links:
+    #  - apiampli
+    #  - apiawox
+    #  - apilivebox
+    #  - apimipow
+    #  - apitvsamsung
