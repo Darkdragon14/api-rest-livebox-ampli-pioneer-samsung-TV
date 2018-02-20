@@ -10,6 +10,10 @@ app.use(function(request, response, next) {
   next();
 });
 
+var tv = {
+  on: false,
+}
+
 var remote = new samsungRemote({
     ip: '192.168.1.72' // required: IP address of your Samsung Smart TV 
 });
@@ -17,7 +21,7 @@ var remote = new samsungRemote({
 app.get('/samsung/voldown', function(req, res){
   	remote.send('KEY_VOLDOWN', function callback(err) {
 	});
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/volup', function(req, res){
@@ -28,56 +32,56 @@ app.get('/samsung/volup', function(req, res){
 app.get('/samsung/voloff', function(req, res){
     remote.send('KEY_MUTE', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/1', function(req, res){
     remote.send('KEY_1', function callback(err) {
   });
-  res.send('ok');    
+  res.json(tv);    
 });
 
 app.get('/samsung/2', function(req, res){
     remote.send('KEY_2', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/3', function(req, res){
     remote.send('KEY_3', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/4', function(req, res){
     remote.send('KEY_4', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 
 app.get('/samsung/5', function(req, res){
     remote.send('KEY_5', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/6', function(req, res){
     remote.send('KEY_6', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/7', function(req, res){
     remote.send('KEY_7', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/8', function(req, res){
     remote.send('KEY_8', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/9', function(req, res){
@@ -88,49 +92,49 @@ app.get('/samsung/9', function(req, res){
 app.get('/samsung/0', function(req, res){
     remote.send('KEY_0', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/0', function(req, res){
     remote.send('KEY_0', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/chup', function(req, res){
     remote.send('KEY_CHUP', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/chdown', function(req, res){
     remote.send('KEY_CHDOWN', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/chp', function(req, res){
     remote.send('KEY_PRECH', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/src', function(req, res){
     remote.send('KEY_SOURCE', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/menu', function(req, res){
     remote.send('KEY_MENU', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/up', function(req, res){
     remote.send('KEY_UP', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/down', function(req, res){
@@ -141,35 +145,35 @@ app.get('/samsung/down', function(req, res){
 app.get('/samsung/left', function(req, res){
     remote.send('KEY_LEFT', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
 app.get('/samsung/right', function(req, res){
     remote.send('KEY_RIGHT', function callback(err) {
   });
-  res.send('ok');
+  res.json(tv);
 });
 
-var etattv = 0;
-var oldetattv = 0;
+
+var oldetattv = false;
 function TVon() {
   remote.isAlive(function(err) {
     if (err) {
         //throw new Error('TV is offline');
-        etattv = 0;
+        tv.on = false;
     } else {
         //console.log('TV is ALIVE!');
-        etattv = 1;
+        tv.on = true;
     }
   });
-  if(etattv != oldetattv){
+  if(tv.on != oldetattv){
     console.log('TV change');
-    oldetattv = etattv;
+    oldetattv = tv.on;
   }
 }
 
 app.get('/samsung/etat', function(req, res){
-    res.send(etattv);
+    res.json(tv);
 });
 
 

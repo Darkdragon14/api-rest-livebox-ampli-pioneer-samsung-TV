@@ -9,11 +9,12 @@ var exec = require('child_process').exec;
   response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });*/
-
-var son;
-var source;
-var power;
-var mute;
+var statut = {
+  son: '',
+  source: '',
+  on: false,
+  mute: false
+};
 
 //Your IP
 var ipAmpli = "192.168.1.70";
@@ -21,171 +22,181 @@ var child = exec('telnet '+ipAmpli+' 8102');
 
 child.stdout.on('data', function (data) {
   if(data.substring(0, 3) == "VOL"){
-    son = data;
+    statut.son = data.substring(3);
     console.log("son : "+son);
   }
-  if(data.substring(0, 3) == "PWR"){
-    power = data;
-    console.log("power : "+power);
+  else if(data.substring(0, 3) == "PWR"){
+    if(data == "PWR0"){
+      statut.on = true;
+    }
+    else{
+      statut.on = false;
+    }
+    console.log("on : "+on);
   }
-  if(data.substring(0, 2) == "FN"){
-    source = data;
+  else if(data.substring(0, 2) == "FN"){
+    statut.source = data.substring(2);
     console.log("source : "+source);
   }
-  if(data.substring(0, 3) == "MUT"){
-    mute = data;
+  else if(data.substring(0, 3) == "MUT"){
+    if(data == "MUT1"){
+      statut.mute = true;
+    }
+    else{
+      statut.mute = false;
+    }
     console.log("mute : "+mute);
   }
 });
 
 app.get('/pioneer/volup', function(req, res){
   child.stdin.write('VU\n');
-  res.send(son);
+  res.json(statut);
 });
 
 app.get('/pioneer/voldown', function(req, res){
   child.stdin.write('VD\n');
-  res.send(son);
+  res.json(statut);
 });
 
 app.get('/pioneer/muteon', function(req, res){
   child.stdin.write('MO\n');
-  mute = "MUT0";
-  res.send(mute);
+  statut.mute = true;
+  res.json(statut);
 });
 
 app.get('/pioneer/muteoff', function(req, res){
   child.stdin.write('MF\n');
-  mute = "MUT1";
-  res.send(mute);
+  statut.mute = "MUT1";
+  res.json(statut);
 });
 
 
 app.get('/pioneer/sourceup', function(req, res){
   child.stdin.write('FU\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/sourcedown', function(req, res){
   child.stdin.write('FD\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/BD', function(req, res){
   child.stdin.write('25FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/DVD', function(req, res){
   child.stdin.write('04FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/SAT', function(req, res){
   child.stdin.write('06FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/DVR', function(req, res){
   child.stdin.write('15FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/video', function(req, res){
   child.stdin.write('10FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/game', function(req, res){
   child.stdin.write('49FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/netradio', function(req, res){
   child.stdin.write('38FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/server', function(req, res){
   child.stdin.write('44FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/favorite', function(req, res){
   child.stdin.write('45FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/usb', function(req, res){
   child.stdin.write('17FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/tv', function(req, res){
   child.stdin.write('05FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/cd', function(req, res){
   child.stdin.write('01FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/tuner', function(req, res){
   child.stdin.write('02FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/adapter', function(req, res){
   child.stdin.write('33FN\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/off', function(req, res){
     child.stdin.write('PF\n');
-    power = "PWR2";
-    res.send(power);
+    statut.on = false;
+    res.json(statut);
 });
 
 app.get('/pioneer/on', function(req, res){
     child.stdin.write('PO\n');
-    power = "PWR0";
-    res.send(power);
+    statut.on = true;
+    res.json(statut);
 });
 
 app.get('/pioneer/volume', function(re, res){
   child.stdin.write('?V\n');
-  res.send(son);
+  res.json(statut);
 });
 
 app.get('/pioneer/power', function(re, res){
   child.stdin.write('?P\n');
-  res.send(power);
+  res.json(statut);
 });
 
 app.get('/pioneer/source', function(re, res){
   child.stdin.write('?F\n');
-  res.send(source);
+  res.json(statut);
 });
 
 app.get('/pioneer/etatmute', function(re, res){
   child.stdin.write('?M\n');
-  res.send(mute);
+  res.json(statut);
 });
 
 app.get('/pioneer/autodirect', function(re, res){
   child.stdin.write('0005SR\n');
-  res.send('ok');
+  res.json(statut);
 });
 
 app.get('/pioneer/alc', function(re, res){
   child.stdin.write('0010SR\n');
-  res.send('ok');
+  res.json(statut);
 });
 
 app.get('/pioneer/advsurround', function(re, res){
   child.stdin.write('0100SR\n');
-  res.send('ok');
+  res.json(statut);
 });
 
 /*
@@ -209,7 +220,7 @@ QUERY INPUT	?F
 SOURCE_UP	FU
 SOURCE_DOWN	FD
 
-Power
+on
 QUERY STATUS?P
 AmpliOff 	PF
 
