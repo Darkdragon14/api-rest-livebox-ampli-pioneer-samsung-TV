@@ -23,29 +23,25 @@ var child = exec('telnet '+ipAmpli+' 8102');
 child.stdout.on('data', function (data) {
   if(data.substring(0, 3) == "VOL"){
     statut.son = data.substring(3);
-    console.log("son : "+son);
   }
   else if(data.substring(0, 3) == "PWR"){
-    if(data == "PWR0"){
+    if(data.substring(0, 4) == "PWR0"){
       statut.on = true;
     }
     else{
       statut.on = false;
     }
-    console.log("on : "+on);
   }
   else if(data.substring(0, 2) == "FN"){
     statut.source = data.substring(2);
-    console.log("source : "+source);
   }
   else if(data.substring(0, 3) == "MUT"){
-    if(data == "MUT1"){
+    if(data.substring(0, 4) == "MUT1"){
       statut.mute = true;
     }
     else{
       statut.mute = false;
     }
-    console.log("mute : "+mute);
   }
 });
 
@@ -198,6 +194,10 @@ app.get('/pioneer/advsurround', function(re, res){
   child.stdin.write('0100SR\n');
   res.json(statut);
 });
+
+app.get('/pioneer/readstate', function(re, res){
+  res.json(statut);
+})
 
 /*
 enverser quand on veut changer le canal

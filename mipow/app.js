@@ -17,6 +17,7 @@ var mipow = {
 
 app.get('/mipow/connect', function(req, res){
   childb.stdin.write('connect\n');
+  //childb.stdin.write('char-read-hnd 0x0016\n');
   mipow.connect = true;
   res.json(mipow);
 });
@@ -28,28 +29,32 @@ app.get('/mipow/disconnect', function(req, res){
 });
 
 app.get('/mipow/modecandleon', function(req, res){
-  childb.stdin.write('char-write-cmd 0x0014 00'+color+'04000000\n');
+  childb.stdin.write('char-write-cmd 0x0014 00'+mipow.color+'04000000\n');
   mipow.effect = "candle";
   res.json(mipow);
 });
 
 app.get('/mipow/moderainbow', function(req, res){
-  childb.stdin.write('char-write-cmd 0x0014 00'+color+'03000000\n');
+  childb.stdin.write('char-write-cmd 0x0014 00'+mipow.color+'03000000\n');
   mipow.effect = "rainbow";
   res.json(mipow);
 });
 
 app.get('/mipow/modeflash', function(req, res){
-  childb.stdin.write('char-write-cmd 0x0014 00'+color+'00006300\n');
+  childb.stdin.write('char-write-cmd 0x0014 00'+mipow.color+'00006300\n');
   mipow.effect = "flash";
   res.json(mipow);
 });
 
 app.get('/mipow/effectoff', function(req, res){
-  childb.stdin.write('char-write-cmd 0x0014 00'+color+'F4000000\n');
+  childb.stdin.write('char-write-cmd 0x0014 00'+mipow.color+'F4000000\n');
   mipow.effect = "none";
   res.json(mipow);
 });
+
+app.get('/mipow/readstate', function(req, res){
+  res.json(mipow);
+})
 
 app.get('/mipow/:color', function(req, res){ 
   mipow.color = req.params.color;

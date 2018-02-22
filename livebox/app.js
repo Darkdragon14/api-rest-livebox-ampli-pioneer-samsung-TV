@@ -27,13 +27,17 @@ function Etatbox() {
   }, function (error, response, body) {
 
       if (!error && response.statusCode === 200) {
-        if (body.result.data.activeStandbyState != etatbox) {
-          livebox.on = body.result.data.activeStandbyState; // Print the json response
+        if (body.result.data.activeStandbyState == 1) {
+          livebox.on = false;
+        }
+        else{
+          livebox.on = true; 
         }
       }
   });
 }
-app.get('/livebox/etatbox', function(re, res) {
+
+app.get('/livebox/readstate', function(re, res) {
   res.json(livebox);
 });
 
