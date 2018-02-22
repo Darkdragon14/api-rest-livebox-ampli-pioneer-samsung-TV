@@ -154,8 +154,13 @@ app.get('/samsung/right', function(req, res){
   res.json(tv);
 });
 
+app.get('/samsung/off', function(req, res){
+    remote.send('KEY_POWEROFF', function callback(err) {
+  });
+  tv.on = false;
+  res.json(tv);
+});
 
-var oldetattv = false;
 function TVon() {
   remote.isAlive(function(err) {
     if (err) {
@@ -166,13 +171,9 @@ function TVon() {
         tv.on = true;
     }
   });
-  if(tv.on != oldetattv){
-    console.log('TV change');
-    oldetattv = tv.on;
-  }
 }
 
-app.get('/samsung/etat', function(req, res){
+app.get('/samsung/readstate', function(req, res){
     res.json(tv);
 });
 
