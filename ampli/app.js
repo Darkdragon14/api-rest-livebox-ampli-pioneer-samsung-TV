@@ -17,7 +17,7 @@ var statut = {
 };
 
 //Your IP
-var ipAmpli = "192.168.1.70";
+var ipAmpli = "";
 var child = exec('telnet '+ipAmpli+' 8102');
 
 child.stdout.on('data', function (data) {
