@@ -15,7 +15,7 @@ var tv = {
 }
 
 var remote = new samsungRemote({
-    ip: '192.168.1.72' // required: IP address of your Samsung Smart TV 
+    ip: '' // required: IP address of your Samsung Smart TV 
 });
 
 app.get('/samsung/voldown', function(req, res){
