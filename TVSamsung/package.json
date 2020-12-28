@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
-    "samsung-remote": "^1.2.5"
+    "samsung-remote": "^1.3.5"
   }
 }
